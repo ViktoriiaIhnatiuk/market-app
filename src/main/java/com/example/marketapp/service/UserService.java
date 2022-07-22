@@ -1,7 +1,5 @@
 package com.example.marketapp.service;
 
-
-import com.example.marketapp.model.Product;
 import com.example.marketapp.model.User;
 
 import java.util.List;
