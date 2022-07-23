@@ -3,13 +3,12 @@ package com.example.marketapp.mapper;
 import com.example.marketapp.dto.request.UserRequestDto;
 import com.example.marketapp.dto.response.UserResponseDto;
 import com.example.marketapp.model.User;
-import org.springframework.stereotype.Component;
-
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper implements RequestMapper<UserRequestDto, User>,
-ResponseMapper<UserResponseDto, User> {
+        ResponseMapper<UserResponseDto, User> {
     @Override
     public User mapToModel(UserRequestDto dto) {
         User user = new User();

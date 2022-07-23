@@ -1,7 +1,5 @@
 package com.example.marketapp.dto.response;
 
-import com.example.marketapp.model.Product;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -56,12 +54,12 @@ public class UserResponseDto {
 
     @Override
     public String toString() {
-        return "UserResponseDto{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", amountOfMoney=" + amountOfMoney +
-                ", productsIds=" + productsIds +
-                '}';
+        return "UserResponseDto{"
+                + "id=" + id
+                + ", firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", amountOfMoney=" + amountOfMoney
+                + ", productsIds=" + productsIds
+                + '}';
     }
 }

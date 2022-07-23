@@ -5,10 +5,9 @@ import com.example.marketapp.model.User;
 import com.example.marketapp.repository.UserRepository;
 import com.example.marketapp.service.ProductService;
 import com.example.marketapp.service.UserService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -68,6 +67,4 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
         return users;
     }
-
-
 }

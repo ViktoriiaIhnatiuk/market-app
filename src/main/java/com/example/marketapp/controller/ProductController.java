@@ -9,11 +9,17 @@ import com.example.marketapp.model.User;
 import com.example.marketapp.service.ProductService;
 import com.example.marketapp.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/products")
@@ -24,7 +30,8 @@ public class ProductController {
     private final ResponseMapper<ProductResponseDto, Product> productResponseMapper;
 
     public ProductController(ProductService productService,
-                             UserService userService, RequestMapper<ProductRequestDto, Product> productRequestMapper,
+                             UserService userService,
+                             RequestMapper<ProductRequestDto, Product> productRequestMapper,
                              ResponseMapper<ProductResponseDto, Product> productResponseMapper) {
         this.productService = productService;
         this.userService = userService;
@@ -34,7 +41,8 @@ public class ProductController {
 
     @PostMapping
     @ApiOperation(value = "Create a new product")
-    public ProductResponseDto createProduct(@Valid @RequestBody ProductRequestDto productRequestDto) {
+    public ProductResponseDto createProduct(@Valid @RequestBody
+                                                ProductRequestDto productRequestDto) {
         Product product = productRequestMapper.mapToModel(productRequestDto);
         Product saved = productService.createProduct(product);
         ProductResponseDto productResponseDto = productResponseMapper.mapToDto(saved);
@@ -43,7 +51,7 @@ public class ProductController {
 
     @GetMapping
     @ApiOperation(value = "Get a list of all products")
-    public List<ProductResponseDto> getAllProducts(){
+    public List<ProductResponseDto> getAllProducts() {
         return productService.getAllProducts().stream()
                 .map(productResponseMapper::mapToDto)
                 .collect(Collectors.toList());
@@ -58,7 +66,7 @@ public class ProductController {
     @PutMapping("/{id}")
     @ApiOperation(value = "Update a product by id")
     public ProductResponseDto updateProduct(@PathVariable Long id,
-                                            @Valid @RequestBody ProductRequestDto productRequestDto) {
+                              @Valid @RequestBody ProductRequestDto productRequestDto) {
         Product product = productService.getProductById(id);
         product.setName(productRequestDto.getName());
         product.setPrice(productRequestDto.getPrice());

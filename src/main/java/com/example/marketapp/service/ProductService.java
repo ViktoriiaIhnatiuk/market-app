@@ -1,7 +1,6 @@
 package com.example.marketapp.service;
 
 import com.example.marketapp.model.Product;
-
 import java.util.List;
 
 public interface ProductService {

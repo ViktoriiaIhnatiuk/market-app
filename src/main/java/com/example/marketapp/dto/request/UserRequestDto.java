@@ -1,7 +1,11 @@
 package com.example.marketapp.dto.request;
 
-import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 public class UserRequestDto {
 
@@ -44,10 +48,10 @@ public class UserRequestDto {
 
     @Override
     public String toString() {
-        return "User{" +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", amountOfMoney=" + amountOfMoney +
-                '}';
+        return "User{"
+                + ", firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", amountOfMoney=" + amountOfMoney
+                + '}';
     }
 }

@@ -11,11 +11,18 @@ import com.example.marketapp.model.User;
 import com.example.marketapp.service.ProductService;
 import com.example.marketapp.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
@@ -40,16 +47,16 @@ public class UserController {
         this.productResponseMapper = productResponseMapper;
     }
 
-
     @PostMapping
     @ApiOperation(value = "Create a new user")
     public UserResponseDto createUser(@Valid @RequestBody UserRequestDto userRequestDto) {
-        return userResponseMapper.mapToDto(userService.createUser(userRequestMapper.mapToModel(userRequestDto)));
+        return userResponseMapper.mapToDto(userService.createUser(
+                userRequestMapper.mapToModel(userRequestDto)));
     }
 
     @GetMapping
     @ApiOperation(value = "Get a list of all users")
-    public List<UserResponseDto> getAllUsers(){
+    public List<UserResponseDto> getAllUsers() {
         return userService.getAllUsers().stream()
                 .map(userResponseMapper::mapToDto)
                 .collect(Collectors.toList());

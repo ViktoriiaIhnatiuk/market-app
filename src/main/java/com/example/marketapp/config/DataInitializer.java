@@ -4,10 +4,9 @@ import com.example.marketapp.model.Product;
 import com.example.marketapp.model.User;
 import com.example.marketapp.service.ProductService;
 import com.example.marketapp.service.UserService;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
+import javax.annotation.PostConstruct;
+import org.springframework.stereotype.Component;
 
 @Component
 public class DataInitializer {

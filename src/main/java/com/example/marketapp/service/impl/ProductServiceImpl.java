@@ -3,9 +3,8 @@ package com.example.marketapp.service.impl;
 import com.example.marketapp.model.Product;
 import com.example.marketapp.repository.ProductRepository;
 import com.example.marketapp.service.ProductService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ProductServiceImpl implements ProductService {
