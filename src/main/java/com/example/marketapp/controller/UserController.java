@@ -89,7 +89,7 @@ public class UserController {
     }
 
     @GetMapping("/products/{id}")
-    @ApiOperation(value = "Get a list of users that bought product by product id")
+    @ApiOperation(value = "Get a list of users, that bought product, by product id")
     public List<UserResponseDto> getAllUsersByProductId(@PathVariable Long id) {
         List<UserResponseDto> users = userService.getAllUsersByProductId(id).stream()
                 .map(e -> userResponseMapper.mapToDto(e))
