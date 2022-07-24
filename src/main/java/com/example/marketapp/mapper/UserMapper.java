@@ -25,8 +25,10 @@ public class UserMapper implements RequestMapper<UserRequestDto, User>,
         userResponseDto.setFirstName(user.getFirstName());
         userResponseDto.setLastName(user.getLastName());
         userResponseDto.setAmountOfMoney(user.getAmountOfMoney());
-        userResponseDto.setProductsIds(user.getProducts().stream().map(e -> e.getId())
-                .collect(Collectors.toList()));
+        if (user.getProducts() != null) {
+            userResponseDto.setProductsIds(user.getProducts().stream().map(e -> e.getId())
+                    .collect(Collectors.toList()));
+        }
         return userResponseDto;
     }
 }

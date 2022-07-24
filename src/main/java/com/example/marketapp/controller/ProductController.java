@@ -5,12 +5,10 @@ import com.example.marketapp.dto.response.ProductResponseDto;
 import com.example.marketapp.mapper.RequestMapper;
 import com.example.marketapp.mapper.ResponseMapper;
 import com.example.marketapp.model.Product;
-import com.example.marketapp.model.User;
 import com.example.marketapp.service.ProductService;
 import com.example.marketapp.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,70 +23,53 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
-    private final UserService userService;
     private final RequestMapper<ProductRequestDto, Product> productRequestMapper;
-    private final ResponseMapper<ProductResponseDto, Product> productResponseMapper;
 
     public ProductController(ProductService productService,
                              UserService userService,
                              RequestMapper<ProductRequestDto, Product> productRequestMapper,
                              ResponseMapper<ProductResponseDto, Product> productResponseMapper) {
         this.productService = productService;
-        this.userService = userService;
         this.productRequestMapper = productRequestMapper;
-        this.productResponseMapper = productResponseMapper;
     }
 
     @PostMapping
     @ApiOperation(value = "Create a new product")
     public ProductResponseDto createProduct(@Valid @RequestBody
                                                 ProductRequestDto productRequestDto) {
-        Product product = productRequestMapper.mapToModel(productRequestDto);
-        Product saved = productService.createProduct(product);
-        ProductResponseDto productResponseDto = productResponseMapper.mapToDto(saved);
-        return productResponseDto;
+        return productService.createProduct(productRequestMapper.mapToModel(productRequestDto));
     }
 
     @GetMapping
     @ApiOperation(value = "Get a list of all products")
     public List<ProductResponseDto> getAllProducts() {
-        return productService.getAllProducts().stream()
-                .map(productResponseMapper::mapToDto)
-                .collect(Collectors.toList());
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get a product by id")
     public ProductResponseDto getProductById(@PathVariable Long id) {
-        return productResponseMapper.mapToDto(productService.getProductById(id));
+        return productService.getProductById(id);
     }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Update a product by id")
     public ProductResponseDto updateProduct(@PathVariable Long id,
                               @Valid @RequestBody ProductRequestDto productRequestDto) {
-        Product product = productService.getProductById(id);
-        product.setName(productRequestDto.getName());
-        product.setPrice(productRequestDto.getPrice());
-        Product updatedProduct = productService.createProduct(product);
-        return productResponseMapper.mapToDto(updatedProduct);
+        return productService.updateProductById(id, productRequestMapper
+                .mapToModel(productRequestDto));
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete a product by id")
     public ProductResponseDto deleteProductById(@PathVariable Long id) {
-        Product productToDelete = productService.getProductById(id);
-        return productResponseMapper.mapToDto(productToDelete);
+        return productService.deleteProductById(id);
     }
 
     @GetMapping("users/{id}")
     @ApiOperation(value = "Get a list of user's products by user's id")
     public List<ProductResponseDto> getAllProductsByUserId(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        List<ProductResponseDto> products = user.getProducts().stream()
-                .map(productResponseMapper::mapToDto)
-                .collect(Collectors.toList());
-        return products;
+        return productService.getAllProductsByUserId(id);
     }
 
 }

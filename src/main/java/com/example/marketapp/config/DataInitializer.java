@@ -38,19 +38,19 @@ public class DataInitializer {
         User john = new User();
         john.setFirstName("John");
         john.setLastName("Doe");
-        john.setAmountOfMoney(BigDecimal.valueOf(100));
+        john.setAmountOfMoney(BigDecimal.valueOf(800));
         userService.createUser(john);
 
         User jane = new User();
         jane.setFirstName("Jane");
         jane.setLastName("Doe");
-        jane.setAmountOfMoney(BigDecimal.valueOf(200));
+        jane.setAmountOfMoney(BigDecimal.valueOf(300));
         userService.createUser(jane);
 
         User mary = new User();
         mary.setFirstName("Mary");
         mary.setLastName("Sue");
-        mary.setAmountOfMoney(BigDecimal.valueOf(50));
+        mary.setAmountOfMoney(BigDecimal.valueOf(150));
         userService.createUser(mary);
     }
 }
