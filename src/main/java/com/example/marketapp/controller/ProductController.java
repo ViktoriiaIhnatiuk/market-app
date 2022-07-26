@@ -2,11 +2,7 @@ package com.example.marketapp.controller;
 
 import com.example.marketapp.dto.request.ProductRequestDto;
 import com.example.marketapp.dto.response.ProductResponseDto;
-import com.example.marketapp.mapper.RequestMapper;
-import com.example.marketapp.mapper.ResponseMapper;
-import com.example.marketapp.model.Product;
 import com.example.marketapp.service.ProductService;
-import com.example.marketapp.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.validation.Valid;
@@ -23,21 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
-    private final RequestMapper<ProductRequestDto, Product> productRequestMapper;
 
-    public ProductController(ProductService productService,
-                             UserService userService,
-                             RequestMapper<ProductRequestDto, Product> productRequestMapper,
-                             ResponseMapper<ProductResponseDto, Product> productResponseMapper) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.productRequestMapper = productRequestMapper;
     }
 
     @PostMapping
     @ApiOperation(value = "Create a new product")
     public ProductResponseDto createProduct(@Valid @RequestBody
                                                 ProductRequestDto productRequestDto) {
-        return productService.createProduct(productRequestMapper.mapToModel(productRequestDto));
+        return productService.createProduct(productRequestDto);
     }
 
     @GetMapping
@@ -56,8 +47,7 @@ public class ProductController {
     @ApiOperation(value = "Update a product by id")
     public ProductResponseDto updateProduct(@PathVariable Long id,
                               @Valid @RequestBody ProductRequestDto productRequestDto) {
-        return productService.updateProductById(id, productRequestMapper
-                .mapToModel(productRequestDto));
+        return productService.updateProductById(id, productRequestDto);
     }
 
     @DeleteMapping("/{id}")

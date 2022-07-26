@@ -19,20 +19,23 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final ResponseMapper<UserResponseDto, User> userResponseMapper;
+    private final RequestMapper<UserRequestDto, User> userRequestMapper;
 
     public UserServiceImpl(UserRepository userRepository,
                            ProductRepository productRepository,
-                           RequestMapper<UserRequestDto, User> userRequestMapper,
-                           ResponseMapper<UserResponseDto, User> userResponseMapper) {
+                           ResponseMapper<UserResponseDto, User> userResponseMapper,
+                           RequestMapper<UserRequestDto, User> userRequestMapper) {
         this.userRepository = userRepository;
 
         this.productRepository = productRepository;
         this.userResponseMapper = userResponseMapper;
+        this.userRequestMapper = userRequestMapper;
     }
 
     @Override
-    public UserResponseDto createUser(User user) {
-        return userResponseMapper.mapToDto(userRepository.save(user));
+    public UserResponseDto createUser(UserRequestDto userRequestDto) {
+        return userResponseMapper.mapToDto(userRepository.save(
+                userRequestMapper.mapToModel(userRequestDto)));
     }
 
     @Override
@@ -49,13 +52,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto updateUserById(Long id, User user) {
+    public UserResponseDto updateUserById(Long id, UserRequestDto userRequestDto) {
         User userToUpdate = userRepository.getById(id);
-        userToUpdate.setFirstName(user.getFirstName());
-        userToUpdate.setLastName(user.getLastName());
-        userToUpdate.setAmountOfMoney(user.getAmountOfMoney());
-        User updatedUser = userRepository.save(userToUpdate);
-        return userResponseMapper.mapToDto(updatedUser);
+        if (userRequestDto.getFirstName() != null) {
+            userToUpdate.setFirstName(userRequestDto.getFirstName());
+        }
+        if (userRequestDto.getLastName() != null) {
+            userToUpdate.setLastName(userRequestDto.getLastName());
+        }
+        if (userRequestDto.getAmountOfMoney() != null) {
+            userToUpdate.setAmountOfMoney(userRequestDto.getAmountOfMoney());
+        }
+        return userResponseMapper.mapToDto(userRepository.save(userToUpdate));
     }
 
     @Override
@@ -70,7 +78,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto buyProduct(Long userId, Long productId) {
         User user = userRepository.getById(userId);
-        UserResponseDto updatedUser = new UserResponseDto();
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new RuntimeException("Can't find product by id: " + productId));
         if (product.getPrice().compareTo(user.getAmountOfMoney()) > 0) {
@@ -81,7 +88,7 @@ public class UserServiceImpl implements UserService {
             products.add(product);
             user.setProducts(products);
         }
-        return createUser(user);
+        return userResponseMapper.mapToDto(userRepository.save(user));
     }
 
     @Override
