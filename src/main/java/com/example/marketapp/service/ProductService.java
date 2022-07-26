@@ -2,7 +2,6 @@ package com.example.marketapp.service;
 
 import com.example.marketapp.dto.request.ProductRequestDto;
 import com.example.marketapp.dto.response.ProductResponseDto;
-import com.example.marketapp.model.Product;
 import java.util.List;
 
 public interface ProductService {

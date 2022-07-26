@@ -2,7 +2,6 @@ package com.example.marketapp.config;
 
 import com.example.marketapp.dto.request.ProductRequestDto;
 import com.example.marketapp.dto.request.UserRequestDto;
-import com.example.marketapp.model.Product;
 import com.example.marketapp.service.ProductService;
 import com.example.marketapp.service.UserService;
 import java.math.BigDecimal;
