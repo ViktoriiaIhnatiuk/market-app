@@ -1,14 +1,7 @@
 package com.example.marketapp.controller;
 
-import com.example.marketapp.dto.request.ProductRequestDto;
 import com.example.marketapp.dto.request.UserRequestDto;
-import com.example.marketapp.dto.response.ProductResponseDto;
 import com.example.marketapp.dto.response.UserResponseDto;
-import com.example.marketapp.mapper.RequestMapper;
-import com.example.marketapp.mapper.ResponseMapper;
-import com.example.marketapp.model.Product;
-import com.example.marketapp.model.User;
-import com.example.marketapp.service.ProductService;
 import com.example.marketapp.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -27,21 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final RequestMapper<UserRequestDto, User> userRequestMapper;
 
-    public UserController(UserService userService, ProductService productService,
-                          RequestMapper<UserRequestDto, User> userRequestMapper,
-                          ResponseMapper<UserResponseDto, User> userResponseMapper,
-                          RequestMapper<ProductRequestDto, Product> productRequestMapper,
-                          ResponseMapper<ProductResponseDto, Product> productResponseMapper) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userRequestMapper = userRequestMapper;
     }
 
     @PostMapping
     @ApiOperation(value = "Create a new user")
     public UserResponseDto createUser(@Valid @RequestBody UserRequestDto userRequestDto) {
-        return userService.createUser(userRequestMapper.mapToModel(userRequestDto));
+        return userService.createUser(userRequestDto);
     }
 
     @GetMapping
@@ -60,7 +47,7 @@ public class UserController {
     @ApiOperation(value = "Update a user by id")
     public UserResponseDto updateUser(@PathVariable Long id,
                                            @Valid @RequestBody UserRequestDto userRequestDto) {
-        return userService.updateUserById(id, userRequestMapper.mapToModel(userRequestDto));
+        return userService.updateUserById(id, userRequestDto);
     }
 
     @DeleteMapping("/{id}")

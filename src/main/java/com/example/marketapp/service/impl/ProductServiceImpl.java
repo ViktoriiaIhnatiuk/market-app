@@ -32,8 +32,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto createProduct(Product product) {
-        return productResponseMapper.mapToDto(productRepository.save(product));
+    public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
+        return productResponseMapper.mapToDto(productRepository.save(
+                productRequestMapper.mapToModel(productRequestDto)));
     }
 
     @Override
@@ -50,11 +51,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto updateProductById(Long id, Product product) {
+    public ProductResponseDto updateProductById(Long id, ProductRequestDto productRequestDto) {
         Product productToUpdate = productRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Can't find product by id: " + id));
-        productToUpdate.setName(product.getName());
-        productToUpdate.setPrice(product.getPrice());
+        if (productRequestDto.getName() != null) {
+            productToUpdate.setName(productRequestDto.getName());
+        }
+        if (productRequestDto.getPrice() != null) {
+            productToUpdate.setPrice(productRequestDto.getPrice());
+        }
         return productResponseMapper.mapToDto(productRepository.save(productToUpdate));
     }
 

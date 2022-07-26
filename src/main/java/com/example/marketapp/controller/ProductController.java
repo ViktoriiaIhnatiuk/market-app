@@ -26,9 +26,7 @@ public class ProductController {
     private final RequestMapper<ProductRequestDto, Product> productRequestMapper;
 
     public ProductController(ProductService productService,
-                             UserService userService,
-                             RequestMapper<ProductRequestDto, Product> productRequestMapper,
-                             ResponseMapper<ProductResponseDto, Product> productResponseMapper) {
+                             RequestMapper<ProductRequestDto, Product> productRequestMapper) {
         this.productService = productService;
         this.productRequestMapper = productRequestMapper;
     }
@@ -37,7 +35,7 @@ public class ProductController {
     @ApiOperation(value = "Create a new product")
     public ProductResponseDto createProduct(@Valid @RequestBody
                                                 ProductRequestDto productRequestDto) {
-        return productService.createProduct(productRequestMapper.mapToModel(productRequestDto));
+        return productService.createProduct(productRequestDto);
     }
 
     @GetMapping
@@ -56,8 +54,7 @@ public class ProductController {
     @ApiOperation(value = "Update a product by id")
     public ProductResponseDto updateProduct(@PathVariable Long id,
                               @Valid @RequestBody ProductRequestDto productRequestDto) {
-        return productService.updateProductById(id, productRequestMapper
-                .mapToModel(productRequestDto));
+        return productService.updateProductById(id, productRequestDto);
     }
 
     @DeleteMapping("/{id}")
