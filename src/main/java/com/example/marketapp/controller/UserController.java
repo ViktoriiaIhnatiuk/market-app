@@ -56,11 +56,11 @@ public class UserController {
         return userService.deleteUserById(id);
     }
 
-    @PutMapping("/{id}/buy")
+    @PutMapping("/{userId}/buy")
     @ApiOperation(value = "Update a user after buying a product")
-    public String buyProduct(@PathVariable Long id,
+    public String buyProduct(@PathVariable Long userId,
                                       @RequestParam Long productId) {
-        userService.buyProduct(id, productId);
+        userService.buyProduct(userId, productId);
         return "Successful purchase!";
     }
 

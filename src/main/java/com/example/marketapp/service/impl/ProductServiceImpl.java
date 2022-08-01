@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -63,13 +64,12 @@ public class ProductServiceImpl implements ProductService {
         return productResponseMapper.mapToDto(productRepository.save(productToUpdate));
     }
 
+    @Transactional
     @Override
     public ProductResponseDto deleteProductById(Long id) {
         Product productToDelete = productRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Can't delete product by id: " + id));
-        List<User> usersWhoHasBoughtProduct = userRepository.findAll().stream()
-                .filter(e -> e.getProducts().contains(productRepository.getById(id)))
-                .collect(Collectors.toList());
+        List<User> usersWhoHasBoughtProduct = userRepository.getAllUsersByProductId(id);
         for (int i = 0; i < usersWhoHasBoughtProduct.size(); i++) {
             Set<Product> products = usersWhoHasBoughtProduct.get(i).getProducts();
             products.remove(productToDelete);
@@ -83,13 +83,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponseDto> getAllProductsByUserId(Long id) {
-        User user = userRepository.getById(id);
-        List<ProductResponseDto> products = user.getProducts().stream()
+        List<ProductResponseDto> products = productRepository.getAllProductsByUserId(id).stream()
                 .map(productResponseMapper::mapToDto)
                 .collect(Collectors.toList());
-        if (products.isEmpty()) {
-            return null;
-        }
         return products;
     }
 }

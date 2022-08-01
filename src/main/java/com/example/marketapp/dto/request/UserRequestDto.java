@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class UserRequestDto {
-
     @NotNull
     @NotEmpty
     @NotBlank
