@@ -47,13 +47,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto getUserById(Long id) {
-        return userResponseMapper.mapToDto(userRepository.findById(id).orElseThrow(
+        return userResponseMapper.mapToDto(userRepository.findAllById(id).orElseThrow(
                 () -> new RuntimeException("Can't find user by id: " + id)));
     }
 
     @Override
     public UserResponseDto updateUserById(Long id, UserRequestDto userRequestDto) {
-        User userToUpdate = userRepository.getById(id);
+        User userToUpdate = userRepository.findAllById(id).orElseThrow(
+                () -> new RuntimeException("Can't find user by id: " + id));
         if (userRequestDto.getFirstName() != null) {
             userToUpdate.setFirstName(userRequestDto.getFirstName());
         }
@@ -69,7 +70,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto deleteUserById(Long id) {
         UserResponseDto userToDelete = userResponseMapper.mapToDto(
-                userRepository.findById(id).orElseThrow(
+                userRepository.findAllById(id).orElseThrow(
                     () -> new RuntimeException("Can't delete user by id: " + id)));
         userRepository.deleteById(id);
         return userToDelete;
@@ -77,7 +78,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto buyProduct(Long userId, Long productId) {
-        User user = userRepository.getById(userId);
+        User user = userRepository.findAllById(userId).orElseThrow(
+                () -> new RuntimeException("Can't find user by id: " + userId));
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new RuntimeException("Can't find product by id: " + productId));
         if (product.getPrice().compareTo(user.getAmountOfMoney()) > 0) {
@@ -92,14 +94,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDto> getAllUsersByProductId(Long id) {
-        List<UserResponseDto> users = userRepository.findAll().stream()
-                .filter(e -> e.getProducts().contains(productRepository.getById(id)))
+    public List<UserResponseDto> getAllUsersByProductId(Long productId) {
+        List<UserResponseDto> users = userRepository.getAllUsersByProductId(productId).stream()
                 .map(userResponseMapper::mapToDto)
                 .collect(Collectors.toList());
-        if (users.isEmpty()) {
-            return null;
-        }
         return users;
     }
 }

@@ -17,5 +17,5 @@ public interface UserService {
 
     UserResponseDto buyProduct(Long userId, Long productId);
 
-    List<UserResponseDto> getAllUsersByProductId(Long id);
+    List<UserResponseDto> getAllUsersByProductId(Long productId);
 }

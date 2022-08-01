@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class UserResponseDto {
-
     private Long id;
     private String firstName;
     private String lastName;
