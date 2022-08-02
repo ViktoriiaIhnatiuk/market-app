@@ -18,16 +18,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> getAllUsersByProductId(Long productId);
 
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
-            attributePaths = {"firstName",
-                      "lastName",
-                      "amountOfMoney",
-                      "products"})
+            attributePaths = {"products"})
     List<User> findAll();
 
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
-            attributePaths = {"firstName",
-                    "lastName",
-                    "amountOfMoney",
-                    "products"})
+            attributePaths = {"products"})
     Optional<User> findAllById(Long id);
 }
